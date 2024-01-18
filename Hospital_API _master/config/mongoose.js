@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 //connect to DB
-mongoose.connect('mongodb://localhost/hospital_API', { useNewUrlParser: true ,useUnifiedTopology: true });
+mongoose.connect('mongodb://127.0.0.1:27017/test');
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, "Error connecting to db"));
