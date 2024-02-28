@@ -35,7 +35,7 @@ app.use(express.urlencoded({
 
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //redirecting routes
 app.use('/report', reportsRoute);
