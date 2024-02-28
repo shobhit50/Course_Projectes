@@ -2,6 +2,52 @@ const Doctor = require('../../../models/doctor');
 const jwt = require('jsonwebtoken');
 
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Doctor:
+ *       type: object
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: The doctor's name
+ *         email:
+ *           type: string
+ *           description: The doctor's email
+ *         password:
+ *           type: string
+ *           description: The doctor's password
+ */
+/**
+ * @openapi
+ * /doctor/register:
+ *   post:
+ *     summary: Register a new doctor
+ *     tags: [Doctors]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The doctor's name
+ *               email:
+ *                 type: string
+ *                 description: The doctor's email
+ *               password:
+ *                 type: string
+ *                 description: The doctor's password
+ *     responses:
+ *       200:
+ *         description: The doctor was successfully created
+ *       500:
+ *         description: Some server error
+ */
+
 //Register the doctor in app
 module.exports.register = async function (req, res) {
   try {
@@ -20,7 +66,62 @@ module.exports.register = async function (req, res) {
     });
   }
 }
-
+/**
+ * @openapi
+ * /doctor/login:
+ *   post:
+ *     summary: Login a doctor
+ *     tags: [Doctors]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The doctor's email
+ *               password:
+ *                 type: string
+ *                 description: The doctor's password
+ *     responses:
+ *       200:
+ *         description: The doctor was successfully logged in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 token:
+ *                   type: string
+ *                 msg:
+ *                   type: string
+ *       400:
+ *         description: No email or password provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 msg:
+ *                   type: string
+ *       401:
+ *         description: Invalid username or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 msg:
+ *                   type: string
+ */
 //Doctor Login
 module.exports.login = async (req, res) => {
   try {
@@ -54,12 +155,14 @@ module.exports.login = async (req, res) => {
 
     // Get JWT token
     const token = doctor.getSignedJwtToken();
+    console.log('here are orignale ', token);
 
     // Return response
     res.status(200).json({
       success: true,
       token,
-      msg: `Log In Sucessful! Keep the Token safely  ${doctor.username}!`
+      msg: `Log In Sucessful! Keep the Token safely  ${doctor.username}!`,
+      doctor_id: doctor._id  // we are sending the doctor object as well
     });
 
   } catch (error) {

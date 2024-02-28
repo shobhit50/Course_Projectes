@@ -1,12 +1,22 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
 const mongoose = require('mongoose');
 
 
+const dbpass = process.env.DB_PASS || "";
+
+
+
 //connect to DB
-mongoose.connect('mongodb://127.0.0.1:27017/test');
-const db = mongoose.connection;
+async function main() {
+    const uri = "mongodb+srv://shobhit:" + dbpass + "@cluster0.snn3wbn.mongodb.net/airBnb?retryWrites=true&w=majority";
+    await mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 
-db.on('error', console.error.bind(console, "Error connecting to db"));
+    console.log('Connected to MongoDB Atlas');
+}
 
-db.once('open', function () {
-    console.log("Successfully connected to db");
-});
+main().catch((err) => console.log(err));
